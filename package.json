@@ -6,7 +6,9 @@
   "scripts": {
     "build": "node scripts/build.js",
     "validate": "node scripts/validate.js",
-    "create-card": "node scripts/create-card.js"
+    "create-card": "node scripts/create-card.js",
+    "api:start": "node api/server.js",
+    "api:test": "node --test api/*.test.js"
   },
   "repository": {
     "type": "git",

@@ -84,6 +84,47 @@ node scripts/create-card.js
 
 Interactive CLI to create new card scheme source files.
 
+## 🚀 Node.js BIN Checker API
+
+A lightweight HTTP API is available in [`api/`](./api), built on top of the JavaScript implementation in [`libs/javascript/`](./libs/javascript/).
+
+### Run the API
+
+```bash
+npm run api:start
+```
+
+The server starts on port `3000` by default. You can override it with `PORT`:
+
+```bash
+PORT=8080 npm run api:start
+```
+
+### API Endpoints
+
+- `GET /health` → API status
+- `GET /brands` → list of supported brand names
+- `GET /brands/:scheme?detailed=true` → brand metadata
+- `POST /support` → check if card is supported
+- `POST /luhn` → validate number with Luhn algorithm
+- `POST /check` → full card check (support, brand, Luhn, optional CVV)
+
+Example payload for `POST /check`:
+
+```json
+{
+  "cardNumber": "4111 1111 1111 1111",
+  "cvv": "123",
+  "detailed": true
+}
+```
+
+### Test the API
+
+```bash
+npm run api:test
+```
+
 ## 📚 Library Implementations
 
 All libraries provide the same core functionality for credit card BIN validation and brand identification.
