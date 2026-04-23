@@ -26,7 +26,8 @@ function normalizeDigits(value) {
 
 function readJsonBody(req) {
   return new Promise((resolve, reject) => {
-    let body = '';
+    const chunks = [];
+    let bodySize = 0;
     let completed = false;
 
     function done(err, payload) {
@@ -41,8 +42,10 @@ function readJsonBody(req) {
 
     req.on('data', chunk => {
       if (completed) return;
-      body += chunk;
-      if (body.length > MAX_REQUEST_BODY_SIZE) {
+      chunks.push(chunk);
+      bodySize += chunk.length;
+
+      if (bodySize > MAX_REQUEST_BODY_SIZE) {
         done(new Error('Request body too large'));
         req.destroy();
       }
@@ -50,12 +53,13 @@ function readJsonBody(req) {
 
     req.on('end', () => {
       if (completed) return;
-      if (!body) {
+      if (bodySize === 0) {
         done(null, {});
         return;
       }
 
       try {
+        const body = Buffer.concat(chunks).toString('utf8');
         done(null, JSON.parse(body));
       } catch (error) {
         done(new Error('Invalid JSON body'));

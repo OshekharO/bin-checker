@@ -95,7 +95,7 @@ test('GET /bin/:bin returns brand metadata for a valid BIN', async () => {
   });
 });
 
-test('POST /bin rejects invalid bin length', async () => {
+test('POST /bin returns invalid result for invalid bin length', async () => {
   await withServer(async baseUrl => {
     const response = await request(baseUrl, '/bin', {
       method: 'POST',
